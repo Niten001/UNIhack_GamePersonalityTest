@@ -2,7 +2,9 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 var jquery = require('jquery');
-const socket = require('socket.io-client');
+var http = require('http');
+const io = require('socket.io-client');
+
 
 let window
 
@@ -10,7 +12,7 @@ function createWindow() {
     window = new BrowserWindow({width:1200, height:800, frame: true});
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, './index.html'),
         protocol: 'file:',
         slashes: true
     }));
