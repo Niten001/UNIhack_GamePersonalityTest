@@ -43,3 +43,46 @@ function update() {
     object.y++;
     object.update();
 }
+
+function player (height, width, x, y, colour, id) {
+    this.height = height;
+    this.width = width;
+    this.x = x;
+    this.y = y;
+    this.colour = colour;
+    this.id = id;
+}
+function getInput(input) {
+    if (input == true) {
+        this.x -= 1;
+    }
+    else {
+        this.x += 1;
+    }
+}
+function checkCollision(player) {
+
+}
+
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 37) {
+        send("Left", true);
+    }
+    else if(event.keyCode == 39) {
+        send("Right", true);
+    }
+    else if (event.keyCode == 32) {
+        send("Space", true);
+    }
+});
+document.addEventListener('keyup', function(event) {
+    if(event.keyCode == 37) {
+        send("Left", false);
+    }
+    else if(event.keyCode == 39) {
+        send("Right", false);
+    }
+    else if (event.keyCode == 32) {
+        send("Space", false);
+    }
+});
