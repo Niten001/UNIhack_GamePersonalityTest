@@ -5,11 +5,10 @@ var jquery = require('jquery');
 var http = require('http');
 const io = require('socket.io-client');
 
-
 let window
 
 function createWindow() {
-    window = new BrowserWindow({width:1200, height:800, frame: true});
+    window = new BrowserWindow({width:1920, height:1080, frame: true, autoHideMenuBar: true});
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, './index.html'),

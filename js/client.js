@@ -1,21 +1,59 @@
 var start = document.getElementById('start_game');
-var player;
+var player = new box(20, 20, "red", 20, 20);
 var inGame = false;
+const client = io.connect('http://172.16.6.104:8000');
 
 start.onclick = function() {
     startGame();
 };
 
+function keyCode(ev){
+    return `${ev.keyCode}`;
+}
+
+window.addEventListener('keydown', function(ev){
+    switch (keyCode(ev)) {
+      case "37":
+        console.log("LEFT");
+        client.emit("input_down_event", "left");
+        break;
+      case "39":
+        console.log("RIGHT");
+        client.emit("input_down_event", "right");
+        break;
+      case "32":
+        console.log("SPACE");
+        client.emit("input_down_event", "space");
+        break;
+      default:
+        break;
+    }
+});
+
+window.addEventListener('keyup', function(ev){
+    switch (keyCode(ev)) {
+      case "37":
+        console.log("LEFT");
+        client.emit("input_up_event", "left");
+        break;
+      case "39":
+        console.log("RIGHT");
+        client.emit("input_up_event", "right");
+        break;
+      case "32":
+        console.log("SPACE");
+        client.emit("input_up_event", "space");
+        break;
+      default:
+        break;
+    }
+});
+
 function startGame() {
-    console.log("Dafaq");
     document.getElementById("start_game").style.display = "none";
-    player = new box(20, 20, "red", 20, 20);
     inGame = true;
     gameArea.start();
 
-    const client = io.connect('http://172.16.6.104:8000');
-
-    client.on("connected", (msg) => console.log(msg));
     //Connect to server
     //Load Canvas
 };
@@ -23,9 +61,12 @@ function startGame() {
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 1200;
-        this.canvas.height = 800;
-        this.canvas.style.border = "solid 1px black";
+        this.canvas.width = 1920;
+        this.canvas.height = 1080;
+        this.canvas.style.padding = "0";
+        this.canvas.style.position = "absolute";
+        this.canvas.style.top = "0";
+        this.canvas.style.left = "0";
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -45,17 +86,22 @@ function box(width, height, color, x, y) {
     this.x = x;
     this.y = y;
 
-    this.update = function() {
-        ctx = gameArea.context;
-
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+    this.update = function(player) {
+        this.x = player.x;
+        this.y = player.y;
+        this.width = player.width;
+        this.height = player.height;
+        this.color = player.color;
     }
 };
 
 function update() {
     gameArea.clear();
-    player.x++;
-    player.y++;
-    player.update();
+    var ctx = gameArea.context;
+
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+
 }
+
+client.on("player_update", (input) => player.update(input));
