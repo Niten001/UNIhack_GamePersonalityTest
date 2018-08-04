@@ -2,6 +2,7 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 var jquery = require('jquery');
+const socket = require('socket.io-client');
 
 let window
 
@@ -23,6 +24,6 @@ function createWindow() {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-    if(proces.platform !== 'darwin'){
+    if(process.platform !== 'darwin'){
     }
 });
