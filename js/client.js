@@ -1,6 +1,7 @@
 var start = document.getElementById('start_game');
 var player = new box(20, 20, "red", 20, 20);
 var inGame = false;
+var pause = false;
 const client = io.connect('http://172.16.6.104:8000');
 
 start.onclick = function() {
@@ -11,7 +12,7 @@ function keyCode(ev){
     return `${ev.keyCode}`;
 }
 
-window.addEventListener('keydown', function(ev){
+window.addEventListener('keydown', function(ev) {
     switch (keyCode(ev)) {
       case "37":
         console.log("LEFT");
@@ -25,38 +26,62 @@ window.addEventListener('keydown', function(ev){
         console.log("SPACE");
         client.emit("input_down_event", "space");
         break;
+    case "27":
+        if (inGame) {
+            pause = !pause;
+            pauseMenu();
+        }
       default:
         break;
     }
 });
 
-window.addEventListener('keyup', function(ev){
+window.addEventListener('keyup', function(ev) {
     switch (keyCode(ev)) {
-      case "37":
-        console.log("LEFT");
-        client.emit("input_up_event", "left");
-        break;
-      case "39":
-        console.log("RIGHT");
-        client.emit("input_up_event", "right");
-        break;
-      case "32":
-        console.log("SPACE");
-        client.emit("input_up_event", "space");
-        break;
-      default:
-        break;
+        case "37":
+            console.log("LEFT");
+            client.emit("input_up_event", "left");
+            break;
+        case "39":
+            console.log("RIGHT");
+            client.emit("input_up_event", "right");
+            break;
+        case "32":
+            console.log("SPACE");
+            client.emit("input_up_event", "space");
+            break;
+        default:
+            break;
     }
 });
 
 function startGame() {
+    document.getElementById("main_menu").style.display = "none";
+    document.getElementById("logo").style.display = "none";
+    document.getElementById("name_title").style.display = "none";
+    document.getElementById("name").style.display = "none";
     document.getElementById("start_game").style.display = "none";
+
     inGame = true;
     gameArea.start();
 
     //Connect to server
     //Load Canvas
 };
+
+function pauseMenu() {
+    if (pause) {
+        document.getElementById("pause_menu").style.display = "block";
+        document.getElementById("pause").style.display = "block";
+        document.getElementById("menu").style.display = "block";
+        document.getElementById("continue").style.display = "block";
+    } else {
+        document.getElementById("pause_menu").style.display = "none";
+        document.getElementById("pause").style.display = "none";
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("continue").style.display = "none";
+    }
+}
 
 var gameArea = {
     canvas : document.createElement("canvas"),

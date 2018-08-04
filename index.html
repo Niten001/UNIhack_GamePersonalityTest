@@ -5,8 +5,19 @@
     <title>Game Personality Test</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
-    <button class="button" id="start_game">Start</button>
+  <body id="body">
+    <div class="glass" id="main_menu">
+      <div id="logo"></div>
+      <div id="name_title">Username:</div>
+      <input id="name" type="text" value="" placeholder="John Smith" name="name" spellcheck="false" autofocus required/>
+      <button id="start_game">Start</button>
+    </div>
+    <div id="pause">
+      <div class="glass" id="pause_menu">
+        <button id="continue">Continue</button>
+        <button id="menu">Back to Menu</button>
+      </div>
+    </div>
     <script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
     <script>
         require("./js/client.js");
